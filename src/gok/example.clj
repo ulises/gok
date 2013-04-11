@@ -18,16 +18,17 @@
      (if (empty? tokens) acc
          (recur (next tokens) (merge-with + acc {(first tokens) 1})))))
 
-(defn standard []
-  (time (->> (file-source "/Users/ulises/personal/gok/books.txt")
+(defn standard [fname]
+  (time (->> (file-source fname)
              (map file-contents)
              (map tokenise)
              (map token-count)
              (cons +)
              (apply merge-with)
              (last))))
-(defn gok-enabled []
-  (time (-> (p-source (file-source "/Users/ulises/personal/gok/books.txt"))
+
+(defn gok-enabled [fname]
+  (time (-> (p-source (file-source fname))
             (one-by-one (file-contents))
             (one-by-one (tokenise))
             (one-by-one (token-count))
